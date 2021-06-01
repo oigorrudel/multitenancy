@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_poc
+    environment:
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: MULTI_ONE
+    ports:
+      - "5432:5432"
+    volumes:
+      - multi-one:/var/lib/postgres
+
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'MULTI_TWO'
+      MYSQL_USER: 'mysql'
+      MYSQL_PASSWORD: '12345'
+      MYSQL_ROOT_PASSWORD: '12345'
+    ports:
+      - '3306:3306'
+    volumes:
+      - multi-two:/var/lib/mysql
+    container_name: mysql
+
+volumes:
+  multi-one:
+
+  multi-two:
