@@ -4,7 +4,6 @@ import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -18,15 +17,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@ComponentScan(basePackages = "br.xksoberbado.multitenancy")
 @Configuration
 @EnableJpaRepositories(
         basePackages = "br.xksoberbado.multitenancy",
         entityManagerFactoryRef = "entityManagerTenants",
         transactionManagerRef = "transactionManagerTenants")
-public class HibernateConfig {
+public class HibernateMultitenancyConfig {
 
-    private static final Logger log = Logger.getLogger(HibernateConfig.class.getName());
+    private static final Logger log = Logger.getLogger(HibernateMultitenancyConfig.class.getName());
 
     @Autowired
     private DataSource defaultDS;
