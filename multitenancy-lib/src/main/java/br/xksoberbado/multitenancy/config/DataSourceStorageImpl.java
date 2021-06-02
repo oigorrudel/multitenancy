@@ -24,7 +24,7 @@ public class DataSourceStorageImpl implements DataSourceStorage {
     private DataSourceConfigRepository repository;
 
     @PostConstruct
-    private void setDefault() {
+    public void setDefault() {
         map.put(Tenants.TENANT_DEFAULT, defaultDS);
     }
 
