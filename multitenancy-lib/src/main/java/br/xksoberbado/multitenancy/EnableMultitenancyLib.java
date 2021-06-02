@@ -5,5 +5,5 @@ import org.springframework.context.annotation.Configuration;
 
 @ComponentScan(basePackages = "br.xksoberbado.multitenancy")
 @Configuration
-public class EnableMultitenancyApplication {
+public class EnableMultitenancyLib {
 }

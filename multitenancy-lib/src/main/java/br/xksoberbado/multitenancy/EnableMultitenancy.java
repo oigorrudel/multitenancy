@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Import(EnableMultitenancyApplication.class)
+@Import(EnableMultitenancyLib.class)
 @Configuration
 public @interface EnableMultitenancy {
 }

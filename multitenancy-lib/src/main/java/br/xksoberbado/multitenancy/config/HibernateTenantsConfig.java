@@ -22,9 +22,9 @@ import java.util.logging.Logger;
         basePackages = "br.xksoberbado.multitenancy",
         entityManagerFactoryRef = "entityManagerTenants",
         transactionManagerRef = "transactionManagerTenants")
-public class HibernateMultitenancyConfig {
+public class HibernateTenantsConfig {
 
-    private static final Logger log = Logger.getLogger(HibernateMultitenancyConfig.class.getName());
+    private static final Logger log = Logger.getLogger(HibernateTenantsConfig.class.getName());
 
     @Autowired
     private DataSource defaultDS;
