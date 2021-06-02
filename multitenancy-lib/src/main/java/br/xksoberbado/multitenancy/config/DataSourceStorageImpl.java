@@ -34,7 +34,7 @@ public class DataSourceStorageImpl implements DataSourceStorage {
     }
 
     private DataSource findByRepository(String tenant) {
-        return repository.findByTenant(tenant)
+        return repository.findById(tenant)
                 .map(dsc -> {
                     DataSource ds = buildDataSource(dsc);
                     map.put(tenant, ds);
