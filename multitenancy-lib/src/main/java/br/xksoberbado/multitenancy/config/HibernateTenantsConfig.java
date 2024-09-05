@@ -1,7 +1,7 @@
 package br.xksoberbado.multitenancy.config;
 
+import lombok.RequiredArgsConstructor;
 import org.hibernate.cfg.Environment;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 @Configuration
@@ -22,37 +21,37 @@ import java.util.logging.Logger;
         basePackages = "br.xksoberbado.multitenancy",
         entityManagerFactoryRef = "entityManagerTenants",
         transactionManagerRef = "transactionManagerTenants")
+@RequiredArgsConstructor
 public class HibernateTenantsConfig {
 
-    private static final Logger log = Logger.getLogger(HibernateTenantsConfig.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HibernateTenantsConfig.class.getName());
 
-    @Autowired
-    private DataSource defaultDS;
-
-    @Autowired
-    private JpaProperties jpaProperties;
+    private final DataSource defaultDS;
+    private final JpaProperties jpaProperties;
 
     @Bean
     @Primary
     public LocalContainerEntityManagerFactoryBean entityManagerTenants() {
-        log.info("Entity Manager das Tenants");
-        Map<String, Object> jpaPropertiesMap = new HashMap<>(jpaProperties.getProperties());
+        LOGGER.info("Tenants Entity Manager");
+
+        final var jpaPropertiesMap = new HashMap<String, Object>(jpaProperties.getProperties());
         jpaPropertiesMap.put(Environment.SHOW_SQL, true);
 
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(defaultDS);
-        em.setPackagesToScan("br.xksoberbado.multitenancy");
-        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        em.setJpaPropertyMap(jpaPropertiesMap);
-        return em;
+        final var entityManager = new LocalContainerEntityManagerFactoryBean();
+        entityManager.setDataSource(defaultDS);
+        entityManager.setPackagesToScan("br.xksoberbado.multitenancy");
+        entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        entityManager.setJpaPropertyMap(jpaPropertiesMap);
+
+        return entityManager;
     }
 
     @Bean
     @Primary
     public PlatformTransactionManager transactionManagerTenants() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        final var transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerTenants().getObject());
+
         return transactionManager;
     }
-
 }

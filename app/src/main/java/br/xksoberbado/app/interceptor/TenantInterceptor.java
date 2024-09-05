@@ -1,25 +1,26 @@
 package br.xksoberbado.app.interceptor;
 
-import br.xksoberbado.multitenancy.config.TenantCache;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import br.xksoberbado.multitenancy.config.TenantHolder;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class TenantInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private TenantCache tenantCache;
-
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String username = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        tenantCache.setTenant(username.equals("joao") ? "MULTI_ONE" : "MULTI_TWO");
+    @SneakyThrows
+    public boolean preHandle(final HttpServletRequest request,
+                             final HttpServletResponse response,
+                             final Object handler) {
+        final var tenantId = request.getHeader("X-Tenant-ID");
+
+        TenantHolder.setTenant(
+            tenantId.equals("1") ? "MULTI_ONE" : "MULTI_TWO"
+        );
+
         return true;
     }
 }

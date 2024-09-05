@@ -1,23 +1,17 @@
 package br.xksoberbado.multitenancy.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.logging.Logger;
-
+@Slf4j
 @Component
-public class TenantResolver implements CurrentTenantIdentifierResolver {
-
-    private static final Logger log = Logger.getLogger(TenantResolver.class.getName());
-
-    @Autowired
-    private TenantCache tenantCache;
+public class TenantResolver implements CurrentTenantIdentifierResolver<String> {
 
     @Override
     public String resolveCurrentTenantIdentifier() {
-        String tenant = tenantCache.getTenant()
-                .orElse(Tenants.TENANT_DEFAULT);
+        final var tenant = TenantHolder.getTenant()
+            .orElse(Tenants.TENANT_DEFAULT);
 
         log.info("** Tenant: " + tenant);
 

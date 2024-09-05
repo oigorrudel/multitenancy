@@ -1,11 +1,9 @@
 package br.xksoberbado.multitenancy.config;
 
-import org.hibernate.MultiTenancyStrategy;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.cfg.Environment;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,44 +15,44 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "br.xksoberbado.app")
+@RequiredArgsConstructor
 public class HibernateAppConfig {
 
-    private static final Logger log = Logger.getLogger(HibernateAppConfig.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HibernateAppConfig.class.getName());
 
-    @Autowired
-    private JpaProperties jpaProperties;
+    private final JpaProperties jpaProperties;
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
-                                                                       MultiTenantConnectionProvider provider,
-                                                                       CurrentTenantIdentifierResolver resolver) {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(final DataSource dataSource,
+                                                                       final MultiTenantConnectionProvider provider,
+                                                                       final CurrentTenantIdentifierResolver resolver) {
 
-        log.info("Entity Manager da App");
-        Map<String, Object> jpaPropertiesMap = new HashMap<>(jpaProperties.getProperties());
-        jpaPropertiesMap.put(Environment.MULTI_TENANT, MultiTenancyStrategy.DATABASE);
+        LOGGER.info("App Entity Manager");
+        final var jpaPropertiesMap = new HashMap<String, Object>(jpaProperties.getProperties());
         jpaPropertiesMap.put(Environment.MULTI_TENANT_CONNECTION_PROVIDER, provider);
         jpaPropertiesMap.put(Environment.MULTI_TENANT_IDENTIFIER_RESOLVER, resolver);
         jpaPropertiesMap.put(Environment.SHOW_SQL, true);
 
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource);
-        em.setPackagesToScan("br.xksoberbado.app");
-        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        em.setJpaPropertyMap(jpaPropertiesMap);
-        return em;
+        final var entityManager = new LocalContainerEntityManagerFactoryBean();
+        entityManager.setDataSource(dataSource);
+        entityManager.setPackagesToScan("br.xksoberbado.app");
+        entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        entityManager.setJpaPropertyMap(jpaPropertiesMap);
+
+        return entityManager;
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(DataSource dataSource,
-                                                         @Qualifier("multitenancyProvider") MultiTenantConnectionProvider provider,
-                                                         @Qualifier("tenantResolver") CurrentTenantIdentifierResolver resolver) {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory(dataSource, provider, resolver).getObject());
+    public PlatformTransactionManager transactionManager(final DataSource dataSource,
+                                                         final MultiTenantConnectionProvider multitenancyProvider,
+                                                         final CurrentTenantIdentifierResolver tenantResolver) {
+        final var transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory(dataSource, multitenancyProvider, tenantResolver).getObject());
+
         return transactionManager;
     }
 }

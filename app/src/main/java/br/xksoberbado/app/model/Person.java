@@ -1,14 +1,11 @@
 package br.xksoberbado.app.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.Data;
 
-import javax.persistence.*;
-
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "PEOPLE")
+@Table(name = "PERSON")
 public class Person {
 
     @Id

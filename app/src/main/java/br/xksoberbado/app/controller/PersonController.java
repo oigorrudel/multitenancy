@@ -2,25 +2,27 @@ package br.xksoberbado.app.controller;
 
 import br.xksoberbado.app.model.Person;
 import br.xksoberbado.app.repository.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("people")
+@RequestMapping("v1/persons")
+@RequiredArgsConstructor
 public class PersonController {
 
-    @Autowired
-    private PersonRepository repository;
+    private final PersonRepository repository;
 
     @GetMapping
-    public ResponseEntity<?> get() {
-        return ResponseEntity.ok(repository.findAll());
+    public List<Person> get() {
+        return repository.findAll();
     }
 
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Person person) {
-        return ResponseEntity.ok(repository.save(person));
+    @ResponseStatus(HttpStatus.CREATED)
+    public Person post(@RequestBody final Person person) {
+        return repository.save(person);
     }
-
 }

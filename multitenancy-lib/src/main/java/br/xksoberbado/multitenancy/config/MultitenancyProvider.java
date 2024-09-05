@@ -1,8 +1,8 @@
 package br.xksoberbado.multitenancy.config;
 
 import br.xksoberbado.multitenancy.error.TenantNotFound;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.engine.jdbc.connections.spi.AbstractDataSourceBasedMultiTenantConnectionProviderImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -10,14 +10,13 @@ import javax.sql.DataSource;
 import java.util.Optional;
 
 @Component
-public class MultitenancyProvider extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
+@RequiredArgsConstructor
+public class MultitenancyProvider extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl<String> {
 
-    @Autowired
-    private DataSource defaultDS;
+    private final DataSource defaultDS;
 
     @Lazy
-    @Autowired
-    private DataSourceStorage dataSourceStorage;
+    private final DataSourceStorage dataSourceStorage;
 
     @Override
     protected DataSource selectAnyDataSource() {
@@ -25,8 +24,8 @@ public class MultitenancyProvider extends AbstractDataSourceBasedMultiTenantConn
     }
 
     @Override
-    protected DataSource selectDataSource(String tenant) {
+    protected DataSource selectDataSource(final String tenant) {
         return Optional.ofNullable(dataSourceStorage.get(tenant))
-                .orElseThrow(() -> new TenantNotFound("Data Source Config não encontrado"));
+            .orElseThrow(() -> new TenantNotFound("Data Source Config não encontrado"));
     }
 }
