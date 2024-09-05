@@ -1,2 +1,2 @@
-INSERT INTO PERSON(NAME, AGE) VALUES ('João', 25);
-INSERT INTO PERSON(NAME, AGE) VALUES ('Maria', 20);
+INSERT INTO person(name, age) VALUES ('João', 25);
+INSERT INTO person(name, age) VALUES ('Maria', 20);

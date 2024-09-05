@@ -1,1 +1,1 @@
-INSERT INTO PERSON(NAME, AGE) VALUES ('Pedro', 30);
+INSERT INTO person(name, age) VALUES ('Pedro', 30);

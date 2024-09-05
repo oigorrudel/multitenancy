@@ -1,6 +1,6 @@
 package br.xksoberbado.app.interceptor;
 
-import br.xksoberbado.multitenancy.config.TenantHolder;
+import br.xksoberbado.app.config.TenantHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
@@ -17,7 +17,7 @@ public class TenantInterceptor implements HandlerInterceptor {
                              final Object handler) {
         final var tenantId = request.getHeader("X-Tenant-ID");
 
-        TenantHolder.setTenant(
+        TenantHolder.set(
             tenantId.equals("1") ? "MULTI_ONE" : "MULTI_TWO"
         );
 
