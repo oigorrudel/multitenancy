@@ -10,6 +10,8 @@ import javax.sql.DataSource;
 @Configuration
 public class FlywayConfig {
 
+    private static final String DEFAULT_SCHEMA = "public";
+
     @Bean
     public FlywayMigrationStrategy flywayMigrationStrategy() {
         return flyway -> {
@@ -24,9 +26,8 @@ public class FlywayConfig {
                 .forEach(tenant -> {
                     final var fw = Flyway.configure()
                         .locations(String.format("tenants/%s", tenant))
-//                        .baselineOnMigrate(Boolean.TRUE)
                         .dataSource((DataSource) dataSourcesMap.get(tenant))
-                        .schemas(tenant)
+                        .defaultSchema(DEFAULT_SCHEMA)
                         .load();
 
                     fw.migrate();

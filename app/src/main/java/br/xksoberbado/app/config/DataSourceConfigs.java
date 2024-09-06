@@ -28,7 +28,7 @@ public class DataSourceConfigs {
         return DataSourceBuilder.create()
             .driverClassName("com.mysql.cj.jdbc.Driver")
             .url("jdbc:mysql://localhost:3306/multi_two")
-            .username("mysql")
+            .username("root")
             .password("12345")
             .build();
     }
