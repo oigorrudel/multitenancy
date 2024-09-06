@@ -1,6 +1,6 @@
 package br.xksoberbado.app.interceptor;
 
-import br.xksoberbado.app.config.TenantHolder;
+import br.xksoberbado.multitenancy.config.TenantHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;

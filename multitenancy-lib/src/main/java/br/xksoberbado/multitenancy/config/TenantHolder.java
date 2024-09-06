@@ -1,4 +1,4 @@
-package br.xksoberbado.app.config;
+package br.xksoberbado.multitenancy.config;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

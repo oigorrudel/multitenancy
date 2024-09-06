@@ -1,5 +1,7 @@
 package br.xksoberbado.app.config;
 
+import br.xksoberbado.multitenancy.config.DataSourceConfigs;
+import br.xksoberbado.multitenancy.config.Tenants;
 import org.flywaydb.core.Flyway;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;

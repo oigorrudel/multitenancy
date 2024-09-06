@@ -1,4 +1,4 @@
-package br.xksoberbado.app.config;
+package br.xksoberbado.multitenancy.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
