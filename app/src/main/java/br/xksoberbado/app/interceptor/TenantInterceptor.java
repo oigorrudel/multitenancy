@@ -18,7 +18,7 @@ public class TenantInterceptor implements HandlerInterceptor {
         final var tenantId = request.getHeader("X-Tenant-ID");
 
         TenantHolder.set(
-            tenantId.equals("1") ? "MULTI_ONE" : "MULTI_TWO"
+            tenantId.equals("1") ? "multi_one" : "multi_two"
         );
 
         return true;

@@ -6,7 +6,7 @@ services:
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: 12345
-      POSTGRES_DB: MULTI_ONE
+      POSTGRES_DB: multi_one
     ports:
       - "5432:5432"
     volumes:
@@ -14,9 +14,9 @@ services:
 
   mysql:
     image: mysql
-    restart: always
+    container_name: mysql
     environment:
-      MYSQL_DATABASE: 'MULTI_TWO'
+      MYSQL_DATABASE: 'multi_two'
       MYSQL_USER: 'mysql'
       MYSQL_PASSWORD: '12345'
       MYSQL_ROOT_PASSWORD: '12345'
@@ -24,9 +24,7 @@ services:
       - '3306:3306'
     volumes:
       - multi-two:/var/lib/mysql
-    container_name: mysql
 
 volumes:
   multi-one:
-
   multi-two:
